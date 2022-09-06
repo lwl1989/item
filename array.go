@@ -1,4 +1,4 @@
-package "item"
+package item
 
 func GetArrayIndex[T comparable](params []T, value T) int {
 	for index, param := range params {
