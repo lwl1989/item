@@ -6,8 +6,8 @@ import (
 )
 
 func TestInArray(t *testing.T) {
-	fmt.Println(InArray([]int{1, 2, 3, 45}, 3))
-	fmt.Println(InArray([]int{1, 2, 3, 45}, 44))
+	fmt.Println(InArray[int]([]int{1, 2, 3, 45}, 3))
+	fmt.Println(InArray[int]([]int{1, 2, 3, 45}, 44))
 }
 
 type cp struct {
@@ -25,10 +25,26 @@ func TestInArrayCompare(t *testing.T) {
 	c := cp{
 		value: "1",
 	}
-	fmt.Println(InArrayCompare([]cp{{
+	fmt.Println(InArrayCompare[cp]([]cp{{
 		"1",
 	}, {"2"}}, c))
-	fmt.Println(InArrayCompare([]cp{{
+	fmt.Println(InArrayCompare[cp]([]cp{{
 		"2",
 	}, {"3"}}, c))
+}
+
+func TestArrayMapCompare(t *testing.T) {
+	fmt.Println( ArrayMapCompare[int]([]map[int]interface{}{
+		{3:"4",4:5},
+		{4:"3"},
+	}, 3))
+	fmt.Println( ArrayMapCompare[int]([]map[int]interface{}{
+		{4:"3"},
+	}, 3))
+}
+
+func TestArrayMapCompareValue(t *testing.T) {
+	fmt.Println( ArrayMapCompareValue[string, ICompare]([]map[string]ICompare{
+		{"a": cp{value: "dasdas"}},
+	}, "a"))
 }
