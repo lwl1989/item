@@ -71,3 +71,42 @@ func ArrayMapCompareValue[K comparable,V any](params []map[K]V, key K)  map[K]ma
 	}
 	return res
 }
+
+func ArrayColumns[K comparable,V any](params []map[K]V, key K) []V {
+	if len(params) <1 {
+		return nil
+	}
+	res := make([]V,  len(params))
+	for i,m := range params {
+		v, ok := m[key]
+		if !ok {
+			// res[i]= *new(V) do not create it
+			continue
+		}
+		res[i] = v
+	}
+	return res
+}
+
+func ArrayColumnValues[K comparable,V any](params []map[K]interface{}, key, VKey K) map[K]V {
+	if len(params) <1 {
+		return nil
+	}
+	res := make(map[K]V)
+	for _,m := range params {
+		_, ok := m[key]
+		if !ok {
+			// res[i]= *new(V) do not create it
+			continue
+		}
+		v,ok := m[VKey]
+		if !ok {
+			continue
+		}
+		value,ok := v.(V)
+		if ok {
+			res[key] = value
+		}
+	}
+	return res
+}
