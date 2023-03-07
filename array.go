@@ -1,5 +1,7 @@
 package item
 
+// GetArrayIndex get value index with slice, if not found return -1
+// 获取数据下标，不存在返回-1
 func GetArrayIndex[T comparable](params []T, value T) int {
 	for index, param := range params {
 		if param == value {
@@ -9,6 +11,8 @@ func GetArrayIndex[T comparable](params []T, value T) int {
 	return -1
 }
 
+// InArray
+// 判断数据是否存在 compare
 func InArray[T comparable](params []T, value T) bool {
 	for _, param := range params {
 		if param == value {
@@ -18,6 +22,8 @@ func InArray[T comparable](params []T, value T) bool {
 	return false
 }
 
+// InArrayCompare
+// 判断数据是否存在 ICompare
 func InArrayCompare[T ICompare](params []T, value T) bool {
 	for _, param := range params {
 		if param.Compare(value) {
@@ -27,6 +33,8 @@ func InArrayCompare[T ICompare](params []T, value T) bool {
 	return false
 }
 
+// ArrayMap
+// 返回输入数组中某个单一列的值的map string interface
 func ArrayMap(params []map[string]interface{}, key string) map[string]map[string]interface{} {
 	if len(params) < 1 {
 		return nil
@@ -42,6 +50,8 @@ func ArrayMap(params []map[string]interface{}, key string) map[string]map[string
 	return res
 }
 
+// ArrayMapCompare
+// 返回输入数组中某个单一列的值的map interface
 func ArrayMapCompare[T comparable](params []map[T]interface{}, key T) map[T]map[T]interface{} {
 	if len(params) < 1 {
 		return nil
@@ -57,6 +67,8 @@ func ArrayMapCompare[T comparable](params []map[T]interface{}, key T) map[T]map[
 	return res
 }
 
+// ArrayMapCompareValue
+// 返回输入数组中某个单一列的值的map
 func ArrayMapCompareValue[K comparable, V any](params []map[K]V, key K) map[K]map[K]V {
 	if len(params) < 1 {
 		return nil
@@ -72,6 +84,8 @@ func ArrayMapCompareValue[K comparable, V any](params []map[K]V, key K) map[K]ma
 	return res
 }
 
+// ArrayColumns
+// 返回输入数组中某个单一列的值
 func ArrayColumns[K comparable, V any](params []map[K]V, key K) []V {
 	if len(params) < 1 {
 		return nil
@@ -88,6 +102,8 @@ func ArrayColumns[K comparable, V any](params []map[K]V, key K) []V {
 	return res
 }
 
+// ArrayColumnValues array convert to slice
+// 将数组合并到一个map
 func ArrayColumnValues[K comparable, V any](params []map[K]interface{}, key, VKey K) map[K]V {
 	if len(params) < 1 {
 		return nil
@@ -111,6 +127,8 @@ func ArrayColumnValues[K comparable, V any](params []map[K]interface{}, key, VKe
 	return res
 }
 
+// ArrayUnique unique with slice
+// 对切片进行去重
 func ArrayUnique[V comparable](params []V) []V {
 	mp := map[V]struct{}{}
 	res := make([]V, len(params))
@@ -126,6 +144,8 @@ func ArrayUnique[V comparable](params []V) []V {
 	return res[:index]
 }
 
+// ArrayDiff diff with slice values
+// 取多个切片的差集
 func ArrayDiff[V comparable](params ...[]V) []V {
 	var all []V
 	mp := map[V]int8{}

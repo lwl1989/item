@@ -2,15 +2,16 @@ package item
 
 import "reflect"
 
-func GetItemMap[K comparable,V any,Item any](values []Item, fieldK, fieldV string) map[K]V {
+// GetItemMap get struct item with fieldK
+func GetItemMap[K comparable, V any, Item any](values []Item, fieldK, fieldV string) map[K]V {
 	if len(values) == 0 {
 		return nil
 	}
 
 	res := make(map[K]V)
-	for _,v := range values {
+	for _, v := range values {
 		rv := reflect.ValueOf(v)
-		if rv.Kind() == reflect.Pointer{
+		if rv.Kind() == reflect.Pointer {
 			if rv.IsNil() {
 				continue
 			}
@@ -18,13 +19,13 @@ func GetItemMap[K comparable,V any,Item any](values []Item, fieldK, fieldV strin
 		}
 
 		rk := rv.FieldByName(fieldK)
-		k,ok := rk.Interface().(K)
+		k, ok := rk.Interface().(K)
 		if !ok {
 			continue
 		}
 
 		rv1 := rv.FieldByName(fieldV)
-		value,ok := rv1.Interface().(V)
+		value, ok := rv1.Interface().(V)
 		if !ok {
 			continue
 		}

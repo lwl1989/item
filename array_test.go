@@ -46,6 +46,7 @@ func TestArrayMapCompare(t *testing.T) {
 func TestArrayMapCompareValue(t *testing.T) {
 	fmt.Println(ArrayMapCompareValue[string, ICompare]([]map[string]ICompare{
 		{"a": cp{value: "dasdas"}},
+		{"b": cp{value: "dasdas"}},
 	}, "a"))
 }
 
