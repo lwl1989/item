@@ -28,11 +28,11 @@ func InArrayCompare[T ICompare](params []T, value T) bool {
 }
 
 func ArrayMap(params []map[string]interface{}, key string) map[string]map[string]interface{} {
-	if len(params) <1 {
+	if len(params) < 1 {
 		return nil
 	}
 	res := make(map[string]map[string]interface{})
-	for _,v := range params {
+	for _, v := range params {
 		_, ok := v[key]
 		if !ok {
 			continue
@@ -42,12 +42,12 @@ func ArrayMap(params []map[string]interface{}, key string) map[string]map[string
 	return res
 }
 
-func ArrayMapCompare[T comparable](params []map[T]interface{}, key T)  map[T]map[T]interface{} {
-	if len(params) <1 {
+func ArrayMapCompare[T comparable](params []map[T]interface{}, key T) map[T]map[T]interface{} {
+	if len(params) < 1 {
 		return nil
 	}
 	res := make(map[T]map[T]interface{})
-	for _,v := range params {
+	for _, v := range params {
 		_, ok := v[key]
 		if !ok {
 			continue
@@ -57,12 +57,12 @@ func ArrayMapCompare[T comparable](params []map[T]interface{}, key T)  map[T]map
 	return res
 }
 
-func ArrayMapCompareValue[K comparable,V any](params []map[K]V, key K)  map[K]map[K]V {
-	if len(params) <1 {
+func ArrayMapCompareValue[K comparable, V any](params []map[K]V, key K) map[K]map[K]V {
+	if len(params) < 1 {
 		return nil
 	}
 	res := make(map[K]map[K]V)
-	for _,v := range params {
+	for _, v := range params {
 		_, ok := v[key]
 		if !ok {
 			continue
@@ -72,12 +72,12 @@ func ArrayMapCompareValue[K comparable,V any](params []map[K]V, key K)  map[K]ma
 	return res
 }
 
-func ArrayColumns[K comparable,V any](params []map[K]V, key K) []V {
-	if len(params) <1 {
+func ArrayColumns[K comparable, V any](params []map[K]V, key K) []V {
+	if len(params) < 1 {
 		return nil
 	}
-	res := make([]V,  len(params))
-	for i,m := range params {
+	res := make([]V, len(params))
+	for i, m := range params {
 		v, ok := m[key]
 		if !ok {
 			// res[i]= *new(V) do not create it
@@ -88,24 +88,61 @@ func ArrayColumns[K comparable,V any](params []map[K]V, key K) []V {
 	return res
 }
 
-func ArrayColumnValues[K comparable,V any](params []map[K]interface{}, key, VKey K) map[K]V {
-	if len(params) <1 {
+func ArrayColumnValues[K comparable, V any](params []map[K]interface{}, key, VKey K) map[K]V {
+	if len(params) < 1 {
 		return nil
 	}
 	res := make(map[K]V)
-	for _,m := range params {
+	for _, m := range params {
 		_, ok := m[key]
 		if !ok {
 			// res[i]= *new(V) do not create it
 			continue
 		}
-		v,ok := m[VKey]
+		v, ok := m[VKey]
 		if !ok {
 			continue
 		}
-		value,ok := v.(V)
+		value, ok := v.(V)
 		if ok {
 			res[key] = value
+		}
+	}
+	return res
+}
+
+func ArrayUnique[V comparable](params []V) []V {
+	mp := map[V]struct{}{}
+	res := make([]V, len(params))
+	var index int
+	for _, v := range params {
+		if _, ok := mp[v]; ok {
+			continue
+		}
+		mp[v] = struct{}{}
+		res[index] = v
+		index++
+	}
+	return res[:index]
+}
+
+func ArrayDiff[V comparable](params ...[]V) []V {
+	var all []V
+	mp := map[V]int8{}
+	for _, v := range params {
+		all = append(all, v...)
+	}
+	for _, v := range all {
+		if num, ok := mp[v]; ok {
+			mp[v] = num + 1
+			continue
+		}
+		mp[v] = 1
+	}
+	var res []V
+	for v, num := range mp {
+		if num == 1 {
+			res = append(res, v)
 		}
 	}
 	return res
