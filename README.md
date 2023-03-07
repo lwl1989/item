@@ -5,8 +5,8 @@ go functions about array、map liked php array_values array_columns actions
 go version must gte 1.18
 
 [![Dongle Release](https://img.shields.io/github/release/lwl1989/item.svg)](https://github.com/lwl1989/item/releases)
-[![Go doc](https://img.shields.io/badge/go.dev-reference-brightgreen?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/lwl1909/item)
-![License](https://img.shields.io/github/license/lwl1909/item)
+[![Go doc](https://img.shields.io/badge/go.dev-reference-brightgreen?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/lwl1989/item)
+![License](https://img.shields.io/github/license/lwl1989/item)
 
 ### Installation
 
