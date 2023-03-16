@@ -187,7 +187,7 @@ func ArraySub[V comparable](arr1, arr2 []V) []V {
 }
 
 // ArrayIntersect Intersect with slice values
-// 取多个切片的交集  params len max 127
+// 取多个切片的交集  params max 127
 func ArrayIntersect[V comparable](params ...[]V) []V {
 	var all []V
 	mp := map[V]int8{}
