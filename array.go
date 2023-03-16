@@ -167,3 +167,46 @@ func ArrayDiff[V comparable](params ...[]V) []V {
 	}
 	return res
 }
+
+// ArraySub diff with slice values
+// example:  [1,2,3]  [2,3,4]  array_sub(a,b) => [1]
+func ArraySub[V comparable](arr1, arr2 []V) []V {
+	var res []V
+	for _, v1 := range arr1 {
+		found := false
+		for _, v2 := range arr2 {
+			if v1 == v2 {
+				found = true
+			}
+		}
+		if !found {
+			res = append(res, v1)
+		}
+	}
+	return res
+}
+
+// ArrayIntersect Intersect with slice values
+// 取多个切片的交集  params len max 127
+func ArrayIntersect[V comparable](params ...[]V) []V {
+	var all []V
+	mp := map[V]int8{}
+	l := int8(len(params))
+	for _, v := range params {
+		all = append(all, v...)
+	}
+	for _, v := range all {
+		if num, ok := mp[v]; ok {
+			mp[v] = num + 1
+			continue
+		}
+		mp[v] = 1
+	}
+	var res []V
+	for v, num := range mp {
+		if num == l {
+			res = append(res, v)
+		}
+	}
+	return res
+}
