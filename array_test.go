@@ -57,3 +57,39 @@ func TestArrayUnique(t *testing.T) {
 func TestArrayDiff(t *testing.T) {
 	fmt.Println(ArrayDiff[string]([]string{"a", "aaa", "a", "bbb", "ccc", "a", "ggg"}, []string{"a", "aaa", "a", "bbb", "ccc", "a", "fff"}))
 }
+
+func TestArrayValues(t *testing.T) {
+	mp := map[string]cp{
+		"a": cp{
+			value: "a",
+		},
+		"b": cp{
+			value: "b",
+		},
+	}
+	res := ArrayValues[string, cp](mp)
+	if len(res) != 2 {
+		t.Fatal("res error with len")
+	}
+}
+
+func TestArrayIntersect(t *testing.T) {
+	fmt.Println(ArrayIntersect[string]([]string{"a", "aaa", "a", "bbb", "ccc", "a", "ggg"}, []string{"a", "aaa", "a", "bbb", "ccc", "a", "fff"}))
+}
+
+func TestArraySub(t *testing.T) {
+	fmt.Println(ArraySub[string]([]string{"a", "aaa", "a", "bbb", "ccc", "a", "ggg"}, []string{"a", "aaa", "a", "bbb", "ccc", "a", "fff"}))
+}
+
+func TestArrayColumns(t *testing.T) {
+	fmt.Println(ArrayColumns[string, string]([]map[string]string{{"a": "a"}, {"a": "b"}, {"a": "c"}, {"a": "d"}}, "a"))
+}
+
+func TestArrayMap(t *testing.T) {
+	fmt.Println(ArrayMap([]map[string]string{{"a": "a"}, {"a": "b"}, {"a": "c"}, {"a": "d"}}, "a"))
+}
+
+func TestGetArrayIndex(t *testing.T) {
+	fmt.Println(GetArrayIndex[int]([]int{1, 3, 5, 7, 98}, 5))
+	fmt.Println(GetArrayIndex[string]([]string{"a", "aaa", "a", "bbb", "ggg", "a", "ggg"}, "ggg"))
+}

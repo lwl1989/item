@@ -34,3 +34,30 @@ func GetItemMap[K comparable, V any, Item any](values []Item, fieldK, fieldV str
 
 	return res
 }
+
+// GetItemValues get struct item with fieldK
+func GetItemValues[VT any, Item any](values []Item, fieldK string) []VT {
+	if len(values) == 0 {
+		return nil
+	}
+
+	res := make([]VT, 0)
+	for _, v := range values {
+		rv := reflect.ValueOf(v)
+		if rv.Kind() == reflect.Pointer {
+			if rv.IsNil() {
+				continue
+			}
+			rv = rv.Elem()
+		}
+
+		rv1 := rv.FieldByName(fieldK)
+		value, ok := rv1.Interface().(VT)
+		if !ok {
+			continue
+		}
+		res = append(res, value)
+	}
+
+	return res
+}

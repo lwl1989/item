@@ -35,17 +35,17 @@ func InArrayCompare[T ICompare](params []T, value T) bool {
 
 // ArrayMap
 // 返回输入数组中某个单一列的值的map string interface
-func ArrayMap(params []map[string]interface{}, key string) map[string]map[string]interface{} {
+func ArrayMap[V any](params []map[string]V, key string) map[string][]map[string]V {
 	if len(params) < 1 {
 		return nil
 	}
-	res := make(map[string]map[string]interface{})
+	res := make(map[string][]map[string]V)
 	for _, v := range params {
 		_, ok := v[key]
 		if !ok {
 			continue
 		}
-		res[key] = v
+		res[key] = append(res[key], v)
 	}
 	return res
 }
@@ -90,7 +90,7 @@ func ArrayColumns[K comparable, V any](params []map[K]V, key K) []V {
 	if len(params) < 1 {
 		return nil
 	}
-	res := make([]V, len(params))
+	res := make([]V, len(params), len(params))
 	for i, m := range params {
 		v, ok := m[key]
 		if !ok {
@@ -98,31 +98,6 @@ func ArrayColumns[K comparable, V any](params []map[K]V, key K) []V {
 			continue
 		}
 		res[i] = v
-	}
-	return res
-}
-
-// ArrayColumnValues array convert to slice
-// 将数组合并到一个map
-func ArrayColumnValues[K comparable, V any](params []map[K]interface{}, key, VKey K) map[K]V {
-	if len(params) < 1 {
-		return nil
-	}
-	res := make(map[K]V)
-	for _, m := range params {
-		_, ok := m[key]
-		if !ok {
-			// res[i]= *new(V) do not create it
-			continue
-		}
-		v, ok := m[VKey]
-		if !ok {
-			continue
-		}
-		value, ok := v.(V)
-		if ok {
-			res[key] = value
-		}
 	}
 	return res
 }
@@ -193,6 +168,7 @@ func ArrayIntersect[V comparable](params ...[]V) []V {
 	mp := map[V]int8{}
 	l := int8(len(params))
 	for _, v := range params {
+		v = ArrayUnique[V](v)
 		all = append(all, v...)
 	}
 	for _, v := range all {
@@ -207,6 +183,17 @@ func ArrayIntersect[V comparable](params ...[]V) []V {
 		if num == l {
 			res = append(res, v)
 		}
+	}
+	return res
+}
+
+// ArrayValues  map transfer to slice
+func ArrayValues[K comparable, V any](mp map[K]V) []V {
+	res := make([]V, len(mp), len(mp))
+	var i int
+	for _, v := range mp {
+		res[i] = v
+		i++
 	}
 	return res
 }
