@@ -1,5 +1,11 @@
 package item
 
+import (
+	"github.com/modern-go/reflect2"
+	"log"
+	"reflect"
+)
+
 // GetArrayIndex get value index with slice, if not found return -1
 // 获取数据下标，不存在返回-1
 func GetArrayIndex[T comparable](params []T, value T) int {
@@ -80,6 +86,62 @@ func ArrayMapCompareValue[K comparable, V any](params []map[K]V, key K) map[K]ma
 			continue
 		}
 		res[key] = v
+	}
+	return res
+}
+
+func ArrayMapColumn[V any, K comparable](params []V, key string) map[K]V {
+	if len(params) < 1 {
+		return nil
+	}
+	rt0 := reflect2.TypeOf(params[0])
+	switch rt0.Kind() {
+	case reflect.Struct:
+		_, ok := rt0.Type1().FieldByName(key)
+		if !ok {
+			log.Printf("not found key with %s", key)
+			return nil
+		}
+	case reflect.Map:
+
+	default:
+		log.Printf("not supported kind with %s", rt0.Kind())
+		return nil
+	}
+	res := make(map[K]V)
+	for _, v := range params {
+		rv := reflect.ValueOf(v)
+		if rv.Kind() == reflect.Pointer {
+			continue
+		}
+		rv = reflect.Indirect(rv)
+		switch rv.Kind() {
+		case reflect.Map:
+			field := rv.MapIndex(reflect.ValueOf(key))
+			if !field.Comparable() {
+				log.Printf("can compare with key:%s type: %s", key, field.Kind())
+				return nil
+			}
+			kv, ok := field.Interface().(K)
+			if !ok {
+				log.Printf("can convert with key:%s type: %s", key, field.Kind())
+				return nil
+			}
+			res[kv] = v
+		case reflect.Struct:
+			field := rv.FieldByName(key)
+			if !field.Comparable() {
+				log.Printf("can compare with key:%s type: %s", key, field.Kind())
+				return nil
+			}
+			kv, ok := field.Interface().(K)
+			if !ok {
+				log.Printf("can convert with key:%s type: %s", key, field.Kind())
+				return nil
+			}
+			res[kv] = v
+		}
+
 	}
 	return res
 }

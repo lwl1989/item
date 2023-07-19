@@ -93,3 +93,63 @@ func TestGetArrayIndex(t *testing.T) {
 	fmt.Println(GetArrayIndex[int]([]int{1, 3, 5, 7, 98}, 5))
 	fmt.Println(GetArrayIndex[string]([]string{"a", "aaa", "a", "bbb", "ggg", "a", "ggg"}, "ggg"))
 }
+
+func TestArrayMapColumn(t *testing.T) {
+	t.Logf("%+v", ArrayMapColumn[map[string]string, string]([]map[string]string{{"a": "a"}, {"a": "b"}, {"a": "c"}, {"a": "d"}}, "a"))
+	type A struct {
+		A string
+		B int
+		C float64
+	}
+	t.Logf("%+v", ArrayMapColumn[A, string]([]A{
+		{
+			A: "3",
+			B: 3,
+			C: 3.3,
+		},
+		{
+			A: "4",
+			B: 4,
+			C: 4.3,
+		},
+		{
+			A: "5",
+			B: 5,
+			C: 5.3,
+		},
+	}, "A"))
+	t.Logf("%+v", ArrayMapColumn[A, int]([]A{
+		{
+			A: "3",
+			B: 3,
+			C: 3.3,
+		},
+		{
+			A: "4",
+			B: 4,
+			C: 4.3,
+		},
+		{
+			A: "5",
+			B: 5,
+			C: 5.3,
+		},
+	}, "B"))
+	t.Logf("%+v", ArrayMapColumn[A, float64]([]A{
+		{
+			A: "3",
+			B: 3,
+			C: 3.3,
+		},
+		{
+			A: "4",
+			B: 4,
+			C: 4.3,
+		},
+		{
+			A: "5",
+			B: 5,
+			C: 5.3,
+		},
+	}, "C"))
+}
